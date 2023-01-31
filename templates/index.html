@@ -1,0 +1,8 @@
+Tähän tulee keskustelusovelluksen näkymä
+<p>
+{% if session.user_id %}
+Olet kirjautunut sisään nimellä {{ session.username }}.
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<a href="/login">Kirjaudu sisään</a>
+{% endif %}
