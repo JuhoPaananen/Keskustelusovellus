@@ -1,0 +1,19 @@
+<h1>Tähän tulee keskustelusovelluksen näkymä</h1>
+<hr>
+<p>
+{% if session.user_id %}
+    <h2>{{ topic }}:</h2>
+        {% for message in messages %}
+        <hr>
+        <p>{{ message[0] }}<br>
+        <hr>
+        luonut: {{ message[1] }} | {{ message[2].strftime("%Y-%m-%d %H:%M:%S") }}</p>
+        {% endfor %}
+        <form action="/new" method="POST">
+            <input type ="hidden" name="topic" value="{{topic}}">
+            <input type ="hidden" name="category" value="{{category}}">
+            <input type ="submit" value = "Uusi viesti">
+        </form>
+    
+        <a href="/{{category}}">Palaa takaisin kategoriaan {{category}}</a>
+{% endif %}
