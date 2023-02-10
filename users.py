@@ -1,3 +1,4 @@
+import secrets
 from db import db
 from flask import session
 from sqlalchemy.sql import text
@@ -13,6 +14,7 @@ def login(username, password):
         if check_password_hash(user.password, password):
             session["user_id"] = user.id
             session["username"] = user.username
+            session["csrf_token"] = secrets.token_hex(16)
             return True
         else:
             return False
@@ -30,7 +32,7 @@ def register(username, password):
         return False
     return login(username, password)
 
-def user_id():
+def get_user_id():
     return session.get("user_id",0)
 
 def user_name():

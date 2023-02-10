@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, url_for
 import users, threads
 
 @app.route("/")
@@ -20,14 +20,32 @@ def messages(category, topic):
     messages = threads.get_messages(topic_id)
     return render_template("messages.html", messages=messages, topic=topic, category=category)
 
-@app.route("/new", methods=["POST"])
-def send():
+@app.route("/add", methods=["POST"])
+def add_message():
     topic = request.form["topic"]
     category = request.form["category"]
-    topic_id = threads.get_topic_id(request.form["topic"])
-    new_message = request.form["message"]
-    threads.save_new_message(new_message, topic_id, users.user_id())
-    return redirect("/")
+    content = request.form["content"]
+    topic_id = threads.get_topic_id(topic)
+    if users.session["csrf_token"] != request.form["csrf_token"]:
+        abort (403)
+    if threads.save_new_message(content, topic_id, users.get_user_id()):
+        return redirect(url_for("messages", category=category, topic=topic))
+    else: 
+        return render_template("error.html", message="Viestin lähettäminen ei onnistunut")
+
+@app.route("/remove_message", methods=["POST"])
+def remove_messge():
+    message_id = request.form["message_id"]
+    user_id = request.form["user_id"]
+    topic = request.form["topic"]
+    category = request.form["category"]
+    if users.session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    if threads.remove_message(message_id, user_id):
+        return redirect(url_for("messages", category=category, topic=topic))
+    else:
+        return render_template("error.html", message="Viestin poistaminen ei onnistunut")
+
 
 @app.route("/result", methods=["GET"])
 def result():
