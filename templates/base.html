@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %} - Juttu App</title>
+        <link rel="stylesheet" href="{{ url_for("static", filename="main.css" ) }}" type="text/css" />
+    </head>
+</html>
+
+<body>
+    <div class="nav">
+      <a class="active" href="/">Etusivu</a>
+      <a href="/about">Tietoa</a>
+      <div class="login-container">
+        {% if session.user_id %}
+        <form action="/logout">
+            <button type="submit">Kirjaudu ulos</button>
+            <p style="float:right;margin-right: 16px;font-size: 16px;">Olet kirjautunut sisään nimellä {{ session.username }}</p> 
+        </form>
+        {% else %}
+        <form action="/login" method="POST">
+            <input type="text" placeholder="käyttäjätunnus" name="username">
+            <input type="password" placeholder="salasana" name="password">
+            <button type="submit">Kirjaudu</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    <div class="content">
+        {% block content %} {% endblock %}
+    </div>
+  </body>

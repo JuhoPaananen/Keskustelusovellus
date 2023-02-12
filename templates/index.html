@@ -1,17 +1,11 @@
-<h1>Tähän tulee keskustelusovelluksen näkymä</h1>
-<hr>
-<p>
-{% if session.user_id %}
-<h2>Kategoriat:</h2>
+{% extends "base.html" %}
+{% block title %} Kategoriat {% endblock %}
+{% block content %}
+<div class="categories">
 <ul>
     {% for category in categories %}
-    <li><a href="/{{category.name}}">{{ category.name }}</a></li>
+        <li><a href="/{{category.name}}">{{ category.name }}</a></li>
     {% endfor %}
 </ul>
-<hr>
-Olet kirjautunut sisään nimellä {{ session.username }}. | <a href="/logout">Kirjaudu ulos</a>
-{% else %}
-Sinun tulee kirjautua sisään.
-<br>
-<a href="/login">Kirjaudu sisään</a>
-{% endif %}
+</div>
+{% endblock %}

@@ -1,12 +1,15 @@
-<h1>Tähän tulee keskustelusovelluksen näkymä</h1>
-<hr>
-<p>
-{% if session.user_id %}
+{% extends "base.html" %}
+{% block title %} {{ category }} {% endblock %}
+
+{% block content %}
+
     <h2>Keskustelut:</h2>
         {% for topic in topics %}
-        <p><a href="/{{category}}/{{topic[0]}}">{{ topic[0] }}</a><br>
-        luonut: {{ topic[1] }} | {{ topic[2].strftime("%Y-%m-%d %H:%M:%S") }}</p>
+            <p><a href="/{{category}}/{{topic[0]}}">{{ topic[0] }}</a><br>
+            luonut: {{ topic[1] }} | {{ topic[2].strftime("%Y-%m-%d %H:%M:%S") }}</p>
         {% endfor %}
-    <a href="/">Palaa takaisin kategorioihin</a>
-{% endif %}
-<hr>
+        {% if session.user_id %}
+            <a href="/new_topic">Luo uusi keskustelu</a>
+            <a href="/">Palaa takaisin kategorioihin</a>
+        {% endif %}
+{% endblock %}
