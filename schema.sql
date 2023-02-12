@@ -25,7 +25,9 @@ CREATE TABLE messages (
     user_id INT NOT NULL REFERENCES users(id),
     topic_id INT NOT NULL REFERENCES topics(id),
     content TEXT NOT NULL,
-    sent_at TIMESTAMP NOT NULL DEFAULT NOW()
+    sent_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT NOW(),
+    visible BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE likes (
