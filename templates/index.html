@@ -1,11 +1,25 @@
 {% extends "base.html" %}
 {% block title %} Kategoriat {% endblock %}
 {% block content %}
-<div class="categories">
-<ul>
+<h2 style="margin: 20px;text-align: center;">Kategoriat</h2>
+<table>
+    <tr>
+        <th>Kategoria</th>
+        <th style="text-align: center">Aihealueita</th>
+        <th style="text-align: center">Viestejä</th>
+        <th>Viimeisin viesti</th>
+    </tr>
     {% for category in categories %}
-        <li><a href="/{{category.name}}">{{ category.name }}</a></li>
+    <tr>
+        <td><a href="/{{category.name}}">{{ category.name }}</a></td>
+        <td style="text-align: center">{{ category[1] }}</td>
+        <td style="text-align: center">{{ category[2] }}</td>
+        {% if category[3] != none %}
+        <td>{{ category[3].strftime("%d %b %Y") }}</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+    </tr>
     {% endfor %}
-</ul>
-</div>
+</table>
 {% endblock %}

@@ -6,7 +6,8 @@
   }
   .nav {
     overflow: hidden;
-    background-color: #939596;
+    background-color: #0e002b;
+    text-align: center;
   }
   .nav a {
     float: left;
@@ -25,7 +26,8 @@
     background-color: #0e002b;
     color: #ffffff;
   }
-  .nav .login-container {
+  .nav .login-container,
+  .nav .search-container {
     float: right;
     color: #ffffff;
   }
@@ -36,27 +38,131 @@
     font-size: 17px;
     border: none;
     width: 120px;
+    border-radius: 4px;
   }
-  .nav .login-container button {
+  .nav .search-container input[type=text] {
+    width: 300px;
+  }
+  .nav .login-container button,
+  .nav .search-container button {
     float: right;
     padding: 6px 10px;
     margin-top: 8px;
+    margin-left: 4px;
     margin-right: 16px;
     background-color: #1c87c9;
     color: white;
     font-size: 17px;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
   }
-  .nav .login-container button:hover {
-    background-color: #0e002b;
+  .nav .login-container button:hover,
+  .nav .search-container button:hover {
+    background-color: orange;
   }
-  @media screen and (max-width: 600px) {
+.categories {
+    margin: auto;
+    width: 75%;
+    padding: 10px 0;
+}
+.category-container {
+    margin-top: 2em;
+}
+.categories li {
+    list-style: none;
+    display: block;
+    padding: 5px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #0e002b;
+    border-radius: 4px;
+}
+.categories a {
+    display: block;
+    padding: 10px 5px;
+    background-color: #0e002b;
+    text-transform: uppercase;
+    border-radius: 4px;
+    font-size: 17px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+.categories ul {
+        display: block;
+        list-style-type: disc;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 40px;
+        padding-inline-end: 40px;
+}
+.categories a:hover {
+    background-color: orange;
+}
+.content {
+    margin: auto;
+    width: 75%;
+    font-size: 20px;
+}
+.content button {
+  padding: 6px 10px;
+  margin-top: 2px;
+  margin-right: 16px;
+  background-color: #1c87c9;
+  color: white;
+  font-size: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.content button:hover {
+  background-color: orange;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td a {
+  display: block;
+  text-decoration: none;
+  color: #0e002b
+}
+td a:hover {
+  background-color: #FED8B1;
+}
+
+tr {
+    border-bottom: 1px solid #0e002b;
+    height: 50px;
+}
+tr:hover {
+  background-color: #FED8B1
+}
+th:hover {
+  background-color: white;
+}
+
+th {
+  text-align: left;
+  background-color: white;    
+}
+
+@media screen and (max-width: 600px) {
+    .nav .login-container,
     .nav .search-container {
-        float: none;
-    }
-    .nav .login-container {
       float: none;
+    }
+    .categories {
+        margin: none;
+        width: 100%;
+        padding: 0%;
+    }
+    .content {
+      font-size: 12px;
     }
     .nav a,
     .topnav input[type=text],
@@ -73,31 +179,3 @@
       border: 1px solid #ccc;
     }
   }
-.categories li {
-    background-color: #eaeada;
-    margin-top: 0.5em;
-    padding: 0.5em;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #d2d2c3;
-    list-style: none;
-}
-.categories a {
-    text-transform: uppercase;
-    font-size: 18px;
-    text-decoration: none;
-    color: black;
-}
-.categories ul {
-        display: block;
-        list-style-type: disc;
-        margin-block-start: 1em;
-        margin-block-end: 1em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
-        padding-inline-start: 40px;
-        padding-inline-end: 40px;
-}
-.categories li:hover {
-    background-color: darkgrey;
-}

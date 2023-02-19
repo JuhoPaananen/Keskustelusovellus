@@ -3,13 +3,26 @@
 
 {% block content %}
 
-    <h2>Keskustelut:</h2>
-        {% for topic in topics %}
-            <p><a href="/{{category}}/{{topic[0]}}">{{ topic[0] }}</a><br>
-            luonut: {{ topic[1] }} | {{ topic[2].strftime("%Y-%m-%d %H:%M:%S") }}</p>
-        {% endfor %}
-        {% if session.user_id %}
-            <a href="/new_topic">Luo uusi keskustelu</a>
-            <a href="/">Palaa takaisin kategorioihin</a>
-        {% endif %}
+<h2 style="margin: 20px;text-align: center;">Keskustelut</h2>
+    {% if session.user_id %}        
+    <form action="/new_topic">
+        <input type="hidden" name="category" value="{{category}}"> 
+        <button type="submit">Aloita uusi keskustelu</button> 
+    </form>
+    {% endif %}
+        <table>
+            <tr>
+                <th>Keskustelu</th>
+                <th>Luonut</th>
+                <th>Viimeisin viesti</th>
+            </tr>
+            {% for topic in topics %}
+            <tr>
+                <td><a href="/{{category}}/{{topic[0]}}">{{ topic[0] }}</a></td>
+                <td>{{ topic[1] }}</td>
+                <td>{{ topic[2].strftime("%d %b %Y") }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/">Palaa takaisin kategorioihin</a>
 {% endblock %}

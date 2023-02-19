@@ -9,8 +9,18 @@
 
 <body>
     <div class="nav">
-      <a class="active" href="/">Etusivu</a>
-      <a href="/about">Tietoa</a>
+      <a href="/">Etusivu</a>
+      <a href="/register">Rekisteröidy</a>
+      {% if category != none %}
+        <a href="/{{category}}">{{category}}</a>
+      {% endif %}
+      <div class="search-container">
+        <form action="/result", method="GET">
+          <input type="text" placeholder="etsi keskusteluista" name="query">
+          <input type="hidden" name="curr_address" value="{/{{ category }}/{{ topic }}}">
+          <button type="submit">Etsi</button>
+        </form>
+      </div>
       <div class="login-container">
         {% if session.user_id %}
         <form action="/logout">

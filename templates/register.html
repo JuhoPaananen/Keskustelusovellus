@@ -1,9 +1,16 @@
-<form action="/register" method="POST">
-    Tunnus: <input type="text" name="username">
-    <p>
-    Salasana: <input type="password" name="password1">
-    <p>
-    Salasana uudestaan: <input type="password" name="password2">
-    <p>
-    <input type="submit" value="Luo uusi tunnus">
+{% extends "base.html" %}
+{% block title %}Uusi käyttäjä{% endblock %}
+{% block content %}
+<h2 style="margin: 20px;text-align: center;">Rekisteröidy</h2>
+<div class="register">
+    <form action="/register" method="POST">
+        Tunnus: <input type="text" name="username">
+        <p>
+        Salasana: <input type="password" name="password1">
+        <p>
+        Salasana uudestaan: <input type="password" name="password2">
+        <p>
+        <input type="submit" value="Luo uusi tunnus">
 </form>
+</div>
+{% endblock %}

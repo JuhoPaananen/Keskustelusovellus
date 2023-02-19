@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %} Hakutulokset {% endblock %}
+{% block content %}
+
+{% if session.user_id %}  
+    {% for message in messages %}
+        <hr>
+        <p>{{ message[0] }}<br>
+        <hr>
+        luonut:  | {{ message[1].strftime("%d.%m.%Y - %H:%M:%S") }}</p>
+{% endfor %}
+{% endif %}
+{% endblock %}
+    

@@ -6,7 +6,7 @@
     <form action="/new_topic" method="POST">
         Aihe: <input type="text" name="new_topic">
         <p>
-        Viesti: <input type="text" name="content">
+        Viesti: <textarea name="content" rows="4" cols="50"></textarea>
         <input type="hidden" name="user_id" value="{{ session.user_id }}">
         <input type="hidden" name="category" value ="{{category}}">
         <input type="hidden" name="topic" value ="{{ topic }}">
