@@ -7,13 +7,73 @@ Keskustelusovellus on yksi kurssin kolmesta annetusta harjoitustyön esimerkkiai
 ## Sovelluksen kuvaus/tarkoitus
 Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueilla on keskusteluketjuja, jotka muodostuvat viesteistä. Jokainen käyttäjä on peruskäyttäjä tai ylläpitäjä.
 
-## Sovelluksen ominaisuuksia:
+## Sovelluksen ominaisuuksia (välipalautus 3 tilanne):
 
-- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen. || TÄMÄ TOIMINTO ON KÄYTÖSSÄ.
-- Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän ja viimeksi lähetetyn viestin ajankohdan. || TÄMÄ TOIMINTO ON KÄYTÖSSÄ ALUEIDEN OSALTA
-- Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön. || TÄMÄ TOIMINTO EI OLE VIELÄ KÄYTÖSSÄ
-- Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun. || TÄTÄ EN SAANUT VIELÄ TOIMIMAAN
-- Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Käyttäjä voi myös poistaa ketjun tai viestin. || EI VIELÄ TOTEUTETTU
-- Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana. || TÄMÄN OSALTA KAIKKI TOIMINALLISUUS ON TOTEUTETTU, MUTTA NIITÄ EI OLE VIETY FRONTTIIN
-- Ylläpitäjä voi lisätä ja poistaa keskustelualueita. || EI TOTEUTETTU VIELÄ
-- Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle. || EI TOTEUTETTU VIELÄ
+### Käytössä olevat ominaisuudet
+- Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen
+- Käyttäjä näkee sovelluksen etusivulla listan alueista sekä jokaisen alueen ketjujen ja viestien määrän ja viimeksi lähetetyn viestin ajankohdan
+- Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön
+- Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun
+- Käyttäjä voi poistaa lähettämänsä viestin tai muokata sen sisältöä
+- Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana
+
+### Kesken olevat ominaisuudet
+- Käyttäjä voi muokata luomansa ketjun otsikkoa. Käyttäjä voi myös poistaa ketjun.
+- Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
+- Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle.
+- Käyttäjän syötteiden validointi
+
+### Lopulliseen palautukseen mennessä tehtävät muutokset
+- Kesken olevien ominaisuuksien käyttöönotto
+- Ulkoasun ja käytettävyyden fiksaukset
+- Mahdolliset uudelleen faktoroinnit ja ainakin "threads" moduulin uudelleen nimeäminen "forum", samalla myös mahdolliset docstringit koodin luettavuuden parantamiseksi
+- Fly.io julkaisu
+
+## Testausohjeet
+- Kloonaa tämä repositorio omalle koneellesi 
+```
+git clone git@github.com:JuhoPaananen/Keskustelusovellus.git
+```
+- Luo kansioon .env-tiedosto ja määritä sen sisältö seuraanvanlaiseksi:
+  - DATABASE_URL=postgresql:///user   [jossa user korvataan omalla käyttäjänimellä]
+  - SECRET_KEY=salainen-avain
+  
+  Pyydetyn salaisen avaimen voi luoda esim. seuraavasti:
+  ```
+  python3
+  import secrets
+  secrets.token_hex(16)
+  ```
+- Seuraavaksi luodaan ja käynnistetään virtuaaliympäristö sekä asennetaan vaaditut riippuvuudet virtuaaliympäristöön
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r ./requirements.txt
+```
+- Sovellus vaatii käynnissä olevan tietokannan toimiakseen. Käynnistä Postgre seuraavalla komennolla jos olet asentanut postgren kurssin ohjeiden mukaisesti:
+  ```
+  start-pg.sh
+  ```
+
+- Seuraavaksi voidaan luoda sovelluksen vaatima tietokantaskeema
+```
+psql < schema.sql
+```
+
+- Mikäli sovelluksen skeema sisältää saman nimisiä tauluja kuin testaajan ympäristössä jo on, testaaja joutuu luomaan uuden tietokannan ja valitsemaan sen testaamisen ajaksi.
+```
+psql < CREATE DATABASE name
+psql < \connect name
+```
+Jos vaihdoit tietokantaa, tulee tämä uuden tietokannan nimi vaihtaa .env tiedostoon <user> kohdalle. Esim. jos luotiin tietokanta "testi", tulee .env tiedoston ensimmäinen rivi olla seuraava: DATABASE_URL=postgresql:///testi
+
+- Skeeman luonnin jälkeen sovellus vaatii toimiakseen vielä vähintään yhden kategorian. Seuraavalla koodilla niitä syntyy kolme:
+```
+psql < INSERT INTO categories (name) VALUES ('Testaajan unelma'), ('Höpöhöpöt'), ('Täällä ei ole yhtään viestiä');
+```
+
+- Nyt sovellus on valmis käynnistettäväksi:
+```
+flask run
+```
+### HAPPY TESTING!
