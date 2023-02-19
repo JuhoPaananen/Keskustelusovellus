@@ -1,5 +1,7 @@
+"""Module responsible of routing"""
+
 from app import app
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, flash, abort
 import users, threads
 
 @app.route("/")
@@ -29,6 +31,7 @@ def add_message():
     if users.session["csrf_token"] != request.form["csrf_token"]:
         abort (403)
     if threads.save_new_message(content, topic_id, users.get_user_id()):
+        flash("Viesti lähetetty")
         return redirect(url_for("messages", category=category, topic=topic))
     else: 
         return render_template("error.html", message="Viestin lähettäminen ei onnistunut")
@@ -42,14 +45,16 @@ def remove_messge():
     if users.session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     if threads.remove_message(message_id, user_id):
+        flash("Viesti poistettu")
         return redirect(url_for("messages", category=category, topic=topic))
     else:
         return render_template("error.html", message="Viestin poistaminen ei onnistunut")
 
-
 @app.route("/result", methods=["GET"])
 def result():
     query = request.args["query"]
+    if query == "":
+        return redirect(request.args["curr_address"])
     messages = threads.search_messages(query)
     return render_template("result.html", messages=messages)
 
@@ -62,6 +67,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         if users.login(username, password):
+            flash("Sisäänkirjautuminen onnistui")
             return redirect("/")
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
@@ -69,6 +75,7 @@ def login():
 @app.route("/logout")
 def logout():
     users.logout()
+    flash("Olet nyt kirjautunut ulos")
     return redirect("/")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -82,14 +89,24 @@ def register():
         if password1 != password2:
             return render_template("error.html", message="Salasanat eivät täsmää")
         if users.register(username, password1):
+            flash("Uusi käyttäjä luotu ja kirjauduttu sisään")
             return redirect("/")
         else:
             return render_template("error.html", message="Rekisteröinti epäonnistui")
-'''
-app.route("/new_topic")
+        
+@app.route("/new_topic", methods=["GET", "POST"])
 def new_topic():
-
-
-@app.route("/new_message")
-def new_message():
-'''
+    if request.method == "GET":
+        category = request.args["category"]
+        return render_template("/new_topic.html", category=category)
+    if request.method == "POST":
+        new_topic = request.form["new_topic"]
+        category = request.form["category"]
+        content = request.form["content"]
+        category_id = threads.get_category_id(category)
+        if users.session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        if threads.save_new_topic(category_id, new_topic, content, users.get_user_id()):
+            return redirect(url_for("messages", category=category, topic=new_topic))
+        else:
+            return render_template("error.html", message="Uuden aiheen luonti ei onnistunut")    

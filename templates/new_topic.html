@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Uusi keskustelu{% endblock %}
+{% block content %}
+<h2 style="margin: 20px;text-align: center;">Uusi keskustelu</h2>
+<div class="new_topic">
+    <form action="/new_topic" method="POST">
+        Aihe: <input type="text" name="new_topic">
+        <p>
+        Viesti: <input type="text" name="content">
+        <input type="hidden" name="user_id" value="{{ session.user_id }}">
+        <input type="hidden" name="category" value ="{{category}}">
+        <input type="hidden" name="topic" value ="{{ topic }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <p>
+        <button type="submit">Aloita uusi keskustelu</button>
+    </form>
+</div>
+{% endblock %}
