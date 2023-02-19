@@ -76,4 +76,5 @@ psql < INSERT INTO categories (name) VALUES ('Testaajan unelma'), ('Höpöhöpö
 ```
 flask run
 ```
-### HAPPY TESTING!
+            
+### Aloitathan rekisteröimällä uuden käyttäjän - HAPPY TESTING!
