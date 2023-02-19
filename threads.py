@@ -68,3 +68,10 @@ def save_new_topic(category_id, new_topic, content, user_id):
     new_topic_id = get_topic_id(new_topic)
     save_new_message(content, new_topic_id, user_id)
     return True
+
+def edit_message(message_id, content, user_id):
+    updated_at = datetime.datetime.now()
+    sql = text("UPDATE messages SET content=:content, updated_at=:updated WHERE id=:message_id AND user_id=:user_id")
+    db.session.execute(sql, {"content":content, "updated":updated_at, "message_id":message_id, "user_id":user_id})
+    db.session.commit()
+    return True

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Muokkaa{% endblock %}
+{% block content %}
+<h2 style="margin: 20px;text-align: center;">Muokkaa viestiä</h2>
+<form action="/edit_message" method="POST">
+    Viesti:<br>
+    <textarea name="edited_content" rows="4" cols="50">{{ content }} </textarea>
+    <br>
+    <input type="hidden" name="message_id" value ="{{ message_id }}">
+    <input type="hidden" name="user_id" value="{{user_id}}">
+    <input type="hidden" name="topic" value="{{ topic }}">
+    <input type="hidden" name="category" value ="{{category}}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <button type="submit">Päivitä viesti</button>
+</form>
+
+{% endblock %}

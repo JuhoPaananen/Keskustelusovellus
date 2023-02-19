@@ -1,7 +1,7 @@
 """Module responsible of routing"""
 
 from app import app
-from flask import render_template, redirect, request, url_for, flash, abort
+from flask import render_template, redirect, request, url_for, abort
 import users, threads
 
 @app.route("/")
@@ -17,10 +17,26 @@ def topics(category):
 
 @app.route("/<string:category>/<string:topic>")
 def messages(category, topic):
-    #category_id = messages.get_category_id(category)
     topic_id = threads.get_topic_id(topic)
     messages = threads.get_messages(topic_id)
     return render_template("messages.html", messages=messages, topic=topic, category=category)
+
+@app.route("/new_topic", methods=["GET", "POST"])
+def new_topic():
+    if request.method == "GET":
+        category = request.args["category"]
+        return render_template("new_topic.html", category=category)
+    if request.method == "POST":
+        new_topic = request.form["new_topic"]
+        category = request.form["category"]
+        content = request.form["content"]
+        category_id = threads.get_category_id(category)
+        if users.session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        if threads.save_new_topic(category_id, new_topic, content, users.get_user_id()):
+            return redirect(url_for("messages", category=category, topic=new_topic))
+        else:
+            return render_template("error.html", message="Uuden aiheen luonti ei onnistunut") 
 
 @app.route("/add", methods=["POST"])
 def add_message():
@@ -29,15 +45,14 @@ def add_message():
     content = request.form["content"]
     topic_id = threads.get_topic_id(topic)
     if users.session["csrf_token"] != request.form["csrf_token"]:
-        abort (403)
+        abort(403)
     if threads.save_new_message(content, topic_id, users.get_user_id()):
-        flash("Viesti lähetetty")
         return redirect(url_for("messages", category=category, topic=topic))
     else: 
         return render_template("error.html", message="Viestin lähettäminen ei onnistunut")
 
 @app.route("/remove_message", methods=["POST"])
-def remove_messge():
+def remove_message():
     message_id = request.form["message_id"]
     user_id = request.form["user_id"]
     topic = request.form["topic"]
@@ -45,10 +60,31 @@ def remove_messge():
     if users.session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     if threads.remove_message(message_id, user_id):
-        flash("Viesti poistettu")
         return redirect(url_for("messages", category=category, topic=topic))
     else:
         return render_template("error.html", message="Viestin poistaminen ei onnistunut")
+
+@app.route("/edit_message", methods=["GET", "POST"])
+def edit_message():
+    if request.method == "POST" and "content" in request.form:
+        content = request.form["content"]
+        user_id = request.form["user_id"]
+        category = request.form["category"]
+        topic = request.form["topic"]
+        message_id = request.form["message_id"]
+        return render_template("edit.html", content=content, user_id=user_id, category=category, topic=topic, message_id=message_id)
+    elif request.method == "POST" and "edited_content" in request.form:
+        message_id = request.form["message_id"]
+        edited_content = request.form["edited_content"]
+        user_id = users.get_user_id()
+        category = request.form["category"]
+        topic = request.form["topic"]
+        if users.session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        if threads.edit_message(message_id, edited_content, user_id):
+            return redirect(url_for("messages", category=category, topic=topic))
+    else:
+        return render_template("error.html", message="Viestin muokkaaminen ei onnistunut")
 
 @app.route("/result", methods=["GET"])
 def result():
@@ -67,7 +103,6 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         if users.login(username, password):
-            flash("Sisäänkirjautuminen onnistui")
             return redirect("/")
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
@@ -75,7 +110,6 @@ def login():
 @app.route("/logout")
 def logout():
     users.logout()
-    flash("Olet nyt kirjautunut ulos")
     return redirect("/")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -89,24 +123,6 @@ def register():
         if password1 != password2:
             return render_template("error.html", message="Salasanat eivät täsmää")
         if users.register(username, password1):
-            flash("Uusi käyttäjä luotu ja kirjauduttu sisään")
             return redirect("/")
         else:
             return render_template("error.html", message="Rekisteröinti epäonnistui")
-        
-@app.route("/new_topic", methods=["GET", "POST"])
-def new_topic():
-    if request.method == "GET":
-        category = request.args["category"]
-        return render_template("/new_topic.html", category=category)
-    if request.method == "POST":
-        new_topic = request.form["new_topic"]
-        category = request.form["category"]
-        content = request.form["content"]
-        category_id = threads.get_category_id(category)
-        if users.session["csrf_token"] != request.form["csrf_token"]:
-            abort(403)
-        if threads.save_new_topic(category_id, new_topic, content, users.get_user_id()):
-            return redirect(url_for("messages", category=category, topic=new_topic))
-        else:
-            return render_template("error.html", message="Uuden aiheen luonti ei onnistunut")    
