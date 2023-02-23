@@ -17,7 +17,8 @@ CREATE TABLE topics (
     user_id INT NOT NULL REFERENCES users(id),
     category_id INT NOT NULL REFERENCES categories(id),
     title TEXT UNIQUE NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    visible BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE messages (

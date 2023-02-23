@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Muokkaa{% endblock %}
+{% block content %}
+<h2 style="margin: 20px;text-align: center;">Muokkaa otsikkoa</h2>
+<form action="/edit_topic" method="POST">
+    Otsikko:<br>
+    <textarea name="edited_title" cols="50">{{ title }} </textarea>
+    <br>
+    <input type="hidden" name="topic_id" value ="{{ topic_id }}">
+    <input type="hidden" name="category" value ="{{ category }}">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <button type="submit">Päivitä otsikko</button>
+</form>
+
+{% endblock %}
