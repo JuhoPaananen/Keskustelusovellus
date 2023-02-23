@@ -6,7 +6,7 @@
 <h2 style="margin: 20px;text-align: center;">Keskustelut</h2>
     {% if session.user_id %}        
     <form action="/new_topic">
-        <input type="hidden" name="category" value="{{category}}"> 
+        <input type="hidden" name="category" value="{{ category }}"> 
         <button type="submit">Aloita uusi keskustelu</button> 
     </form>
     {% endif %}
@@ -15,12 +15,33 @@
                 <th>Keskustelu</th>
                 <th>Luonut</th>
                 <th>Viimeisin viesti</th>
+                 <th></th>
             </tr>
             {% for topic in topics %}
             <tr>
                 <td><a href="/{{category}}/{{topic[0]}}">{{ topic[0] }}</a></td>
                 <td>{{ topic[1] }}</td>
                 <td>{{ topic[2].strftime("%d %b %Y") }}</td>
+                {% if session.user_id == topic[3] %}
+                <td>    
+                    <form action="/edit_topic" method="POST" name="topic_info">
+                        <input type="hidden" name="user_id" value="{{ topic[3] }}">
+                        <input type="hidden" name="topic_id" value="{{ topic[4] }}">
+                        <input type="hidden" name="title" value="{{ topic[0] }}">
+                        <input type="hidden" name="category" value ="{{ category }}">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        <button type="submit">Muokkaa otsikkoa</button> 
+                    </form>
+                    <form action="/remove_topic" method="POST">
+                        <input type="hidden" name="user_id" value="{{ session.user_id }}">
+                        <input type="hidden" name="topic_id" value="{{topic[4]}}">
+                        <input type="hidden" name="topic" value="{{topic}}">
+                        <input type="hidden" name="category" value ="{{category}}">
+                        <input type="hidden" name="csrf_token" value="{{session.csrf_token}}">
+                        <button type="submit">Poista keskustelu</button> 
+                    </form>
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </table>
