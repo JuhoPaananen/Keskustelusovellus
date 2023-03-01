@@ -19,7 +19,7 @@
             </tr>
             {% for topic in topics %}
             <tr>
-                <td><a href="/{{category}}/{{topic[0]}}">{{ topic[0] }}</a></td>
+                <td><a href="/{{category}}/{{ topic[4] }}">{{ topic[0] }}</a></td>
                 <td>{{ topic[1] }}</td>
                 <td>{{ topic[2].strftime("%d %b %Y") }}</td>
                 {% if session.user_id == topic[3] %}

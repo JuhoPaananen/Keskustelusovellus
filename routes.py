@@ -3,7 +3,6 @@
 from app import app
 from flask import render_template, redirect, request, url_for, abort, flash
 import users, forum
-from urllib.parse import quote
 
 @app.route("/")
 def index():
@@ -16,12 +15,12 @@ def topics(category):
     topic_list = forum.get_topics(category_id)
     return render_template("topic.html", topics=topic_list, category=category)
 
-@app.route("/<string:category>/<string:topic>")
+@app.route("/<string:category>/<int:topic>")
 def messages(category, topic):
-    topic_id = forum.get_topic_id(topic)
-    messages = forum.get_messages(topic_id)
-    if forum.topic_is_visible(topic_id):
-        return render_template("messages.html", messages=messages, topic=topic, category=category)
+    messages = forum.get_messages(topic)
+    topic_title = forum.get_topic(topic)
+    if forum.topic_is_visible(topic):
+        return render_template("messages.html", messages=messages, topic=topic_title, category=category)
     else:
         return render_template("error.html", message="Tämä keskustelu on poistettu")
 

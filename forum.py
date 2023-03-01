@@ -21,8 +21,13 @@ def get_category_id(category_name):
     return result.fetchone()[0]
 
 def get_topic_id(topic_name):
-    sql = text("SELECT id FROM topics WHERE title = :topic_name")
+    sql = text("SELECT id FROM topics WHERE title =:topic_name")
     result = db.session.execute(sql, {"topic_name":topic_name})
+    return result.fetchone()[0]
+
+def get_topic(topic_id):
+    sql = text("SELECT title FROM topics WHERE id=:topic_id")
+    result = db.session.execute(sql, {"topic_id":topic_id})
     return result.fetchone()[0]
 
 def get_topics(id):
