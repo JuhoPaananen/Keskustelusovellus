@@ -66,11 +66,11 @@ def get_messages(topic_id):
 
 def search_messages(keyword):
     query = "%"+keyword+"%"
-    sql = text("SELECT M.content, M.sent_at, M.id, T.title, C.name \
+    sql = text("SELECT M.content, M.sent_at, M.id, T.title, C.name, T.id \
                 FROM messages M \
                 LEFT JOIN topics T ON M.topic_id = T.id \
                 LEFT JOIN categories C ON T.category_id = C.id \
-                WHERE M.content LIKE :query AND M.visible=:visible \
+                WHERE M.content LIKE :query AND M.visible=:visible AND T.visible=:visible\
                 ORDER BY M.sent_at ASC")
     result = db.session.execute(sql, {"query":query, "visible":"TRUE"})
     return result.fetchall()

@@ -81,7 +81,7 @@ def add_message():
     if users.session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     if forum.save_new_message(content, topic_id, users.get_user_id()):
-        return redirect(url_for("messages", category=category, topic=topic))
+        return redirect(url_for("messages", category=category, topic=topic_id))
     else: 
         return render_template("error.html", message="Viestin lähettäminen ei onnistunut")
 
@@ -90,11 +90,12 @@ def remove_message():
     message_id = request.form["message_id"]
     #user_id = request.form["user_id"]
     topic = request.form["topic"]
+    topic_id = forum.get_topic_id(topic)
     category = request.form["category"]
     if users.session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     if forum.remove_message(message_id, users.get_user_id()):
-        return redirect(url_for("messages", category=category, topic=topic))
+        return redirect(url_for("messages", category=category, topic=topic_id))
     else:
         return render_template("error.html", message="Viestin poistaminen ei onnistunut")
 

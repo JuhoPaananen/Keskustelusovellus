@@ -40,14 +40,16 @@
         {% endfor %}
     </table>    
     
-    <form action="/add" method="POST">
-        Uusi viesti:<br>
-        <textarea name="content" rows="4" cols="50"></textarea>
-        <br>
-        <input type="hidden" name="topic" value="{{ topic }}">
-        <input type="hidden" name="category" value ="{{ category }}">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <button type="submit">Lähetä viesti</button>
-    </form>
+    {% if session.user %}
+        <form action="/add" method="POST">
+            Uusi viesti:<br>
+            <textarea name="content" rows="4" cols="50"></textarea>
+            <br>
+            <input type="hidden" name="topic" value="{{ topic }}">
+            <input type="hidden" name="category" value ="{{ category }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit">Lähetä viesti</button>
+        </form>
+    {% endif %}
     <a href="/{{category}}">Palaa keskusteluihin kategoriassa {{ category }}</a>
 {% endblock %}
