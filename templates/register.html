@@ -3,14 +3,34 @@
 {% block content %}
 <h2 style="margin: 20px;text-align: center;">Rekisteröidy</h2>
 <div class="register">
-    <form action="/register" method="POST">
-        Tunnus: <input type="text" name="username">
-        <p>
-        Salasana: <input type="password" name="password1">
-        <p>
-        Salasana uudestaan: <input type="password" name="password2">
-        <p>
-        <input type="submit" value="Luo uusi tunnus">
-</form>
+    <form action="/register" method="POST" onsubmit="return check(this)">
+        <div>
+            <label>Tunnus:</label>
+            <input type="text" name="username" placeholder="maks. 50 merkkiä">
+        </div>
+        <div>
+           <label>Salasana</label>
+           <input type="password" name="password1" placeholder="maks. 100 merkkiä"> 
+        </div>
+        <div>
+            <label>Salasana uudestaan</label>
+            <input type="password" name="password2" placeholder="maks. 100 merkkiä">
+        </div>
+        <button type="submit">Luo uusi tunnus</button>
+    </form>
 </div>
 {% endblock %}
+
+<script>
+    function check(form) {
+        if (form.username.value.length > 50) {
+            alert("Käyttäjätunnus on yli 50 merkkiä pitkä");
+            return false;
+        }
+        if (form.password1.value.length > 100) {
+            alert("Salasana on yli 100 merkkiä pitkä");
+            return false;
+        }
+        return true;
+    }
+</script>

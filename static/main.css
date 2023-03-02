@@ -61,6 +61,50 @@
   .nav .search-container button:hover {
     background-color: orange;
   }
+  .register,
+  .new_topic {
+    text-align: center;
+  }
+  .register form,
+  .new_topic form {
+    text-align: right;
+    display: inline-block;
+  }
+  .register div,
+  .new_topic div {
+    margin-bottom: 10px;
+  }
+  .register label,
+  .new_topic label {
+    display: inline-block;
+    width: 200px;
+    font-size: 17px;
+  }
+  .register input[type="text"],
+  .register input[type="password"],
+  .new_topic input[type="text"],
+  .new_topic textarea {
+    font-size: 17px;
+    border: solid;
+    border-width: 0.5px;
+    width: 400px;
+    border-radius: 4px;
+  }
+  .register form button,
+  .new_topic form button {
+    float: right;
+    margin-top: 8px;
+    background-color: #1c87c9;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .register button:hover,
+  .new_topic button:hover {
+    background-color: orange;
+  }
 .categories {
     margin: auto;
     width: 75%;

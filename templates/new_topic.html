@@ -3,10 +3,15 @@
 {% block content %}
 <h2 style="margin: 20px;text-align: center;">Uusi keskustelu</h2>
 <div class="new_topic">
-    <form action="/new_topic" method="POST">
-        Aihe: <input type="text" name="new_topic">
-        <p>
-        Viesti: <textarea name="content" rows="4" cols="50"></textarea>
+    <form action="/new_topic" method="POST" onsubmit="return check(this)">
+        <div>
+            <label>Aihe</label>
+            <input type="text" name="new_topic" placeholder="Maks. 100 merkkiä">
+        </div>
+        <div>
+            <label>Viesti</label>
+            <textarea name="content" rows="4" cols="50" placeholder="Maks 5000 merkkiä"></textarea>
+        </div>
         <input type="hidden" name="user_id" value="{{ session.user_id }}">
         <input type="hidden" name="category" value ="{{category}}">
         <input type="hidden" name="topic" value ="{{ topic }}">
@@ -16,3 +21,17 @@
     </form>
 </div>
 {% endblock %}
+
+<script>
+    function check(form) {
+        if (form.new_topic.value.length > 100) {
+            alert("Aiheen otsikko on liian pitkä");
+            return false;
+        }
+        if (form.content.value.length > 5000) {
+            alert("Viesti on liian pitkä");
+            return false;
+        }
+        return true;
+    }
+</script>

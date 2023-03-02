@@ -2,7 +2,7 @@
 {% block title %}Muokkaa{% endblock %}
 {% block content %}
 <h2 style="margin: 20px;text-align: center;">Muokkaa otsikkoa</h2>
-<form action="/edit_topic" method="POST">
+<form action="/edit_topic" method="POST" onsubmit="return check(this)">
     Otsikko:<br>
     <textarea name="edited_title" cols="50">{{ title }} </textarea>
     <br>
@@ -13,3 +13,13 @@
 </form>
 
 {% endblock %}
+
+<script>
+    function check(form) {
+        if (form.edited_title.value.length > 100) {
+            alert("Aiheen otsikko on liian pitkä");
+            return false;
+        }
+        return true;
+    }
+</script>

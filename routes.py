@@ -34,10 +34,15 @@ def new_topic():
         category = request.form["category"]
         content = request.form["content"]
         category_id = forum.get_category_id(category)
+        if len(new_topic) > 100:
+            return render_template("error.html", message="Aihe on liian pitkä")
+        if len(content) > 5000:
+            return render_template("error.html", message="Viesti on liian pitkä")
         if users.session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         if forum.save_new_topic(category_id, new_topic, content, users.get_user_id()):
-            return redirect(url_for("messages", category=category, topic=new_topic))
+            new_topic_id = forum.get_topic_id(new_topic)
+            return redirect(url_for("messages", category=category, topic=new_topic_id))
         else:
             return render_template("error.html", message="Uuden aiheen luonti ei onnistunut") 
         
@@ -65,6 +70,8 @@ def edit_topic():
         edited_title = request.form["edited_title"]
         user_id = users.get_user_id()
         category = request.form["category"]
+        if len(edited_title) > 100:
+            return render_template("error.html", message="Aihe on liian pitkä")
         if users.session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         if forum.edit_topic(topic_id, edited_title, user_id):
@@ -78,6 +85,8 @@ def add_message():
     category = request.form["category"]
     content = request.form["content"]
     topic_id = forum.get_topic_id(topic)
+    if len(content) > 5000:
+            return render_template("error.html", message="Viesti on liian pitkä")
     if users.session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     if forum.save_new_message(content, topic_id, users.get_user_id()):
@@ -88,7 +97,6 @@ def add_message():
 @app.route("/remove_message", methods=["POST"])
 def remove_message():
     message_id = request.form["message_id"]
-    #user_id = request.form["user_id"]
     topic = request.form["topic"]
     topic_id = forum.get_topic_id(topic)
     category = request.form["category"]
@@ -114,6 +122,8 @@ def edit_message():
         user_id = users.get_user_id()
         category = request.form["category"]
         topic = request.form["topic"]
+        if len(edited_content) > 5000:
+            return render_template("error.html", message="Viesti on liian pitkä")
         if users.session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         if forum.edit_message(message_id, edited_content, user_id):
@@ -125,7 +135,7 @@ def edit_message():
 def result():
     query = request.args["query"]
     if query == "":
-        return redirect(request.args["curr_address"])
+        return redirect("/")
     messages = forum.search_messages(query)
     return render_template("result.html", messages=messages)
 
@@ -157,6 +167,10 @@ def register():
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+        if len(username) > 50:
+            return render_template("error.html", message="Käyttäjätunnus on yli 50 merkkiä")
+        if len(password1) > 100:
+            return render_template("error.html", message="Salasana on yli 100 merkkiä pitkä")
         if password1 != password2:
             return render_template("error.html", message="Salasanat eivät täsmää")
         if users.register(username, password1):

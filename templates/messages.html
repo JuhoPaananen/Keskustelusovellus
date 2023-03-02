@@ -2,7 +2,7 @@
 {% block title %} Viestit {% endblock %}
 {% block content %}
 
-    <h2>{{ topic }}:</h2>  
+    <h2>{{ topic }}</h2>  
     <table>
         <tr>
             <th>Viesti</th>
@@ -40,10 +40,10 @@
         {% endfor %}
     </table>    
     
-    {% if session.user %}
-        <form action="/add" method="POST">
+    {% if session.user_id %}
+        <form action="/add" method="POST" onsubmit="return check(this)">
             Uusi viesti:<br>
-            <textarea name="content" rows="4" cols="50"></textarea>
+            <textarea name="content" rows="4" cols="50" placeholder="maks. 5000 merkkiä"></textarea>
             <br>
             <input type="hidden" name="topic" value="{{ topic }}">
             <input type="hidden" name="category" value ="{{ category }}">
@@ -53,3 +53,13 @@
     {% endif %}
     <a href="/{{category}}">Palaa keskusteluihin kategoriassa {{ category }}</a>
 {% endblock %}
+
+<script>
+    function check(form) {
+        if (form.content.value.length > 5000) {
+            alert("Viesti on liian pitkä");
+            return false;
+        }
+        return true;
+    }
+</script>

@@ -2,7 +2,7 @@
 {% block title %}Muokkaa{% endblock %}
 {% block content %}
 <h2 style="margin: 20px;text-align: center;">Muokkaa viestiä</h2>
-<form action="/edit_message" method="POST">
+<form action="/edit_message" method="POST" onsubmit="return check(this)">
     Viesti:<br>
     <textarea name="edited_content" rows="4" cols="50">{{ content }} </textarea>
     <br>
@@ -15,3 +15,13 @@
 </form>
 
 {% endblock %}
+
+<script>
+    function check(form) {
+        if (form.edited_content.value.length > 5000) {
+            alert("Viesti on liian pitkä");
+            return false;
+        }
+        return true;
+    }
+</script>
