@@ -1,3 +1,5 @@
+"""Module responsible of session and user related methods"""
+
 import secrets
 from db import db
 from flask import session
@@ -37,4 +39,3 @@ def get_user_id():
 
 def user_name():
     return session.get("username")
-
