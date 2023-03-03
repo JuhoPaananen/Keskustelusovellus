@@ -9,6 +9,7 @@
             <th>Lähettäjä</th>
             <th>Lähetetty</th>
             <th style="text-align: center;">Tykkäykset</th>
+            <th></th>
             <th style="width: 100px;"></th>
             <th style="width: 100px;"></th>
             <th></th>
@@ -18,15 +19,17 @@
             <td>{{ message[0] }}</td>
             <td>{{ message[1] }}</td>
             <td>{{ message[2].strftime("%d %b %Y") }}</td>
-            <td style="text-align: center;">{{ message[5] }}<br>
+            <td style= "text-align: center;">{{ message[5] }}</td>
+            <td>
             {% if session.user_id %}
                 {% if message[6] == 0 %}
-                    <a href="{{url_for("upvote", message_id=message[4], user_id=session.user_id, category=category, topic=topic)}}"><img src="../images/like.png" alt="Tykkää"></a>
+                    <a href="{{url_for("upvote", message_id=message[4], user_id=session.user_id, category=category, topic=topic)}}"><img src="../static/images/like.png" alt="Tykkää"></a>
                 {% else %}
-                    <a href="{{url_for("downvote", message_id=message[4], user_id=session.user_id, category=category, topic=topic)}}"><img src="../images/dislike.png" alt="Älä tykkää"></a>
+                    <a href="{{url_for("downvote", message_id=message[4], user_id=session.user_id, category=category, topic=topic)}}"><img src="../static/images/dislike.png" alt="En tykkääkään"></a>
                 {% endif %}
             {% endif %}
             {% if session.user_id == message[3] %}
+            </td>
             <td>    
             <form action="/edit_message" method="POST" name="message_info">
                 <input type="hidden" name="user_id" value="{{session.user_id}}">
