@@ -168,28 +168,27 @@
 table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 14px;
+  font-size: 17px;
+  margin: 10px;
 }
 td a img {
-  max-width: 30px;
-  max-height: auto;
-  min-width: 10px;
-  min-height: auto;
   display: block;
-  margin: 0 auto;
+  max-width: 30px;
+  max-height: 30px;
+  margin: 10px 10px;
 }
 td a {
-  display: block;
+  /*display: block;*/
   text-decoration: none;
   color: #0e002b
 }
 td a:hover {
   background-color: #FED8B1;
 }
-
-tr {
+table tr {
   border-bottom: 1px solid #0e002b;
-  height: 50px;
+  margin: 10px;
+  overflow: hidden;
 }
 tr:hover {
   background-color: #FED8B1
@@ -197,10 +196,10 @@ tr:hover {
 th:hover {
   background-color: white;
 }
-
 th {
   text-align: left;
-  background-color: white;    
+  background-color: white;
+  padding-right: 20px;    
 }
 
 @media screen and (max-width: 600px) {

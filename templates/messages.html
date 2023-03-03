@@ -10,13 +10,12 @@
             <th>Lähetetty</th>
             <th style="text-align: center;">Tykkäykset</th>
             <th></th>
-            <th style="width: 100px;"></th>
-            <th style="width: 100px;"></th>
-            <th></th>
+            <th style="max-width: 100px;"></th>
+            <th style="max-width: 100px;"></th>
         </tr>
         {% for message in messages %}
         <tr>
-            <td>{{ message[0] }}</td>
+            <td>{{ message[0].replace("\r", "\n") }}</td>
             <td>{{ message[1] }}</td>
             <td>{{ message[2].strftime("%d %b %Y") }}</td>
             <td style= "text-align: center;">{{ message[5] }}</td>
@@ -28,8 +27,8 @@
                     <a href="{{url_for("downvote", message_id=message[4], user_id=session.user_id, category=category, topic=topic)}}"><img src="../static/images/dislike.png" alt="En tykkääkään"></a>
                 {% endif %}
             {% endif %}
-            {% if session.user_id == message[3] %}
             </td>
+            {% if session.user_id == message[3] %}
             <td>    
             <form action="/edit_message" method="POST" name="message_info">
                 <input type="hidden" name="user_id" value="{{session.user_id}}">
@@ -51,6 +50,9 @@
                 <button type="submit">Poista viesti</button> 
             </form>
             </td>
+            {% else %}
+            <td></td>
+            <td></td>
             {% endif %}    
         </tr>
         {% endfor %}

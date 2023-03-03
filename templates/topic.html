@@ -15,7 +15,8 @@
                 <th>Keskustelu</th>
                 <th>Luonut</th>
                 <th>Viimeisin viesti</th>
-                 <th></th>
+                <th></th>
+                <th></th>
             </tr>
             {% for topic in topics %}
             <tr>
@@ -23,7 +24,7 @@
                 <td>{{ topic[1] }}</td>
                 <td>{{ topic[2].strftime("%d %b %Y") }}</td>
                 {% if session.user_id == topic[3] %}
-                <td>    
+                <td style:"max-width: 100px;">    
                     <form action="/edit_topic" method="POST" name="topic_info">
                         <input type="hidden" name="user_id" value="{{ topic[3] }}">
                         <input type="hidden" name="topic_id" value="{{ topic[4] }}">
@@ -32,6 +33,8 @@
                         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <button type="submit">Muokkaa otsikkoa</button> 
                     </form>
+                </td>
+                <td style="max-width: 100px;">
                     <form action="/remove_topic" method="POST">
                         <input type="hidden" name="user_id" value="{{ session.user_id }}">
                         <input type="hidden" name="topic_id" value="{{topic[4]}}">
@@ -41,6 +44,9 @@
                         <button type="submit">Poista keskustelu</button> 
                     </form>
                 </td>
+                {% else %}
+                <td></td>
+                <td></td>
                 {% endif %}
             </tr>
             {% endfor %}
