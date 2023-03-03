@@ -168,8 +168,13 @@
 table {
   border-collapse: collapse;
   width: 100%;
+  font-size: 14px;
 }
-
+tr a img {
+  max-width: 50%;
+  display: block;
+  margin: 0 auto;
+}
 td a {
   display: block;
   text-decoration: none;
@@ -180,8 +185,8 @@ td a:hover {
 }
 
 tr {
-    border-bottom: 1px solid #0e002b;
-    height: 50px;
+  border-bottom: 1px solid #0e002b;
+  height: 50px;
 }
 tr:hover {
   background-color: #FED8B1

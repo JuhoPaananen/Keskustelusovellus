@@ -8,6 +8,9 @@
             <th>Viesti</th>
             <th>Lähettäjä</th>
             <th>Lähetetty</th>
+            <th style="text-align: center;">Tykkäykset</th>
+            <th style="width: 100px;"></th>
+            <th style="width: 100px;"></th>
             <th></th>
         </tr>
         {% for message in messages %}
@@ -15,6 +18,14 @@
             <td>{{ message[0] }}</td>
             <td>{{ message[1] }}</td>
             <td>{{ message[2].strftime("%d %b %Y") }}</td>
+            <td style="text-align: center;">{{ message[5] }}<br>
+            {% if session.user_id %}
+                {% if message[6] == 0 %}
+                    <a href="{{url_for("upvote", message_id=message[4], user_id=session.user_id, category=category, topic=topic)}}"><img src="../images/like.png" alt="Tykkää"></a>
+                {% else %}
+                    <a href="{{url_for("downvote", message_id=message[4], user_id=session.user_id, category=category, topic=topic)}}"><img src="../images/dislike.png" alt="Älä tykkää"></a>
+                {% endif %}
+            {% endif %}
             {% if session.user_id == message[3] %}
             <td>    
             <form action="/edit_message" method="POST" name="message_info">
@@ -26,6 +37,8 @@
                 <input type="hidden" name="content" value="{{message[0]}}">
                 <button type="submit">Muokkaa viestiä</button> 
             </form>
+            </td>
+            <td>
             <form action="/remove_message" method="POST">
                 <input type="hidden" name="user_id" value="{{ session.user_id }}">
                 <input type="hidden" name="message_id" value="{{message[4]}}">
@@ -39,7 +52,7 @@
         </tr>
         {% endfor %}
     </table>    
-    
+    <br>
     {% if session.user_id %}
         <form action="/add" method="POST" onsubmit="return check(this)">
             Uusi viesti:<br>
@@ -51,6 +64,7 @@
             <button type="submit">Lähetä viesti</button>
         </form>
     {% endif %}
+    <br>
     <a href="/{{category}}">Palaa keskusteluihin kategoriassa {{ category }}</a>
 {% endblock %}
 

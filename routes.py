@@ -17,7 +17,7 @@ def topics(category):
 
 @app.route("/<string:category>/<int:topic>")
 def messages(category, topic):
-    messages = forum.get_messages(topic)
+    messages = forum.get_messages(topic, users.get_user_id())
     topic_title = forum.get_topic(topic)
     if forum.topic_is_visible(topic):
         return render_template("messages.html", messages=messages, topic=topic_title, category=category)
@@ -79,6 +79,22 @@ def edit_topic():
     else:
         return render_template("error.html", message="Otsikon muokkaaminen ei onnistunut")
 
+@app.route("/<string:category>/<string:topic>/<int:message_id>/<int:user_id>/like")
+def upvote(category, topic, message_id, user_id):
+    topic_id = forum.get_topic_id(topic)
+    if forum.like(message_id, user_id):
+        return redirect(url_for("messages", category=category, topic=topic_id))
+    else:
+        return render_template("error.html", message="Tykkääminen ei onnistunut")
+
+@app.route("/<string:category>/<string:topic>/<int:message_id>/<int:user_id>/unlike")
+def downvote(category, topic, message_id, user_id):
+    topic_id = forum.get_topic_id(topic)
+    if forum.unlike(message_id, user_id):
+        return redirect(url_for("messages", category=category, topic=topic_id))
+    else:
+        return render_template("error.html", message="Tykkäämisen poistaminen ei onnistunut")
+
 @app.route("/add", methods=["POST"])
 def add_message():
     topic = request.form["topic"]
@@ -122,12 +138,13 @@ def edit_message():
         user_id = users.get_user_id()
         category = request.form["category"]
         topic = request.form["topic"]
+        topic_id = forum.get_topic_id(topic)
         if len(edited_content) > 5000:
             return render_template("error.html", message="Viesti on liian pitkä")
         if users.session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         if forum.edit_message(message_id, edited_content, user_id):
-            return redirect(url_for("messages", category=category, topic=topic))
+            return redirect(url_for("messages", category=category, topic=topic_id))
     else:
         return render_template("error.html", message="Viestin muokkaaminen ei onnistunut")
 

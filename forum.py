@@ -5,7 +5,6 @@ from sqlalchemy.sql import text
 import datetime
 
 def get_categories():
-    # add checks for hidden categories
     sql = text("SELECT C.name, COUNT(DISTINCT(T.id)), COUNT(M.id) FILTER (WHERE M.visible=TRUE) AS messages_count, MAX(M.sent_at) \
                 FROM categories C \
                 LEFT JOIN topics T ON C.id = T.category_id \
@@ -55,13 +54,16 @@ def remove_message(message_id, user_id):
     db.session.commit()
     return True
 
-def get_messages(topic_id):
-    sql = text("SELECT M.content, U.username, M.sent_at, U.id, M.id \
+def get_messages(topic_id, user_id):
+    sql = text("SELECT M.content, U.username, M.sent_at, U.id, M.id, COUNT(L.message_id) AS like_count, \
+                COUNT(CASE WHEN L.user_id=:user_id THEN 1 ELSE NULL END) AS user_liked \
                 FROM messages M \
-                LEFT JOIN users U ON M.user_id = U.id \
+                INNER JOIN users U ON M.user_id = U.id \
+                LEFT JOIN likes L ON M.id = L.message_id \
                 WHERE M.topic_id = :topic_id AND visible=:visible \
-                ORDER BY M.sent_at ASC")
-    result = db.session.execute(sql, {"topic_id":topic_id, "visible":"TRUE"})
+                GROUP BY M.content, U.username, M.sent_at, U.id, M.id \
+                ORDER BY M.sent_at;")
+    result = db.session.execute(sql, {"topic_id":topic_id, "visible":"TRUE", "user_id":user_id})
     return result.fetchall()
 
 def search_messages(keyword):
@@ -109,3 +111,16 @@ def topic_is_visible(topic_id):
     sql = text("SELECT visible FROM topics WHERE id=:topic_id")
     result = db.session.execute(sql, {"topic_id":topic_id})
     return result.fetchone()[0]
+
+def like(message_id, user_id):
+    sql = text("INSERT INTO likes (message_id, user_id, vote) \
+                VALUES (:message_id, :user_id, 1)")
+    db.session.execute(sql, {"message_id":message_id, "user_id":user_id})
+    db.session.commit()
+    return True
+
+def unlike(message_id, user_id):
+    sql = text("DELETE FROM likes WHERE (message_id=:message_id AND user_id=:user_id)")
+    db.session.execute(sql, {"message_id":message_id, "user_id":user_id})
+    db.session.commit()
+    return True
