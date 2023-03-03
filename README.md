@@ -7,7 +7,7 @@ Keskustelusovellus on yksi kurssin kolmesta annetusta harjoitustyön esimerkkiai
 ## Sovelluksen kuvaus/tarkoitus
 Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueilla on keskusteluketjuja, jotka muodostuvat viesteistä. Jokainen käyttäjä on peruskäyttäjä tai ylläpitäjä.
 
-## Sovelluksen ominaisuuksia (välipalautus 3 tilanne):
+## Sovelluksen ominaisuuksia (Lopullinen palautus):
 
 ### Käytössä olevat ominaisuudet
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen
@@ -16,18 +16,18 @@ Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueil
 - Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun
 - Käyttäjä voi poistaa lähettämänsä viestin tai muokata sen sisältöä
 - Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana
-
-### Kesken olevat ominaisuudet
+- Käyttäjä voi tykätä viesteistä ja poistaa tykkäyksen
 - Käyttäjä voi muokata luomansa ketjun otsikkoa. Käyttäjä voi myös poistaa ketjun.
+- Käyttäjän syötteet validoidaan
+
+### Kurssityön ulkopuolelle jääneet ominaisuudet
 - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
 - Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle.
-- Käyttäjän syötteiden validointi
+  - Nyt ylläpidolliset toimenpiteet tulee toteuttaa suoraan tietokannan kautta
+- Salaiset keskusteluryhmät valituille käyttäjille
 
-### Lopulliseen palautukseen mennessä tehtävät muutokset
-- Kesken olevien ominaisuuksien käyttöönotto
-- Ulkoasun ja käytettävyyden fiksaukset
-- Mahdolliset uudelleen faktoroinnit ja ainakin "threads" moduulin uudelleen nimeäminen "forum", samalla myös mahdolliset docstringit koodin luettavuuden parantamiseksi
-- Fly.io julkaisu
+## Tuotantoversiota pääset testaamaan
+https://juttu-app.fly.dev/
 
 ## Testausohjeet
 - Kloonaa tämä repositorio omalle koneellesi 
