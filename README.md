@@ -29,6 +29,8 @@ Sovelluksessa näkyy keskustelualueita, joista jokaisella on tietty aihe. Alueil
 ## Tuotantoversiota pääset testaamaan
 https://juttu-app.fly.dev/
 
+**HUOM. tuotantopalvelin temppuilee tuntemattomasta syystä: Jos sivu ei vastaa niin ongelma korjaantuu päivittämällä (F5 tms.) verkkosivu.**
+
 ## Testausohjeet
 - Kloonaa tämä repositorio omalle koneellesi 
 ```
